@@ -107,7 +107,7 @@ saved/
 wandb/
 .cometml-runs/
 outputs/
-
+**/__pycache__/
 # editor, os cache directory
 .vscode/
 .idea/
