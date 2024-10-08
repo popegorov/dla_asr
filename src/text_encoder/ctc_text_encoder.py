@@ -65,7 +65,7 @@ class CTCTextEncoder:
         for ind in inds:
             if last_char_ind == ind:
                 continue
-            if last_char_ind != self.EMPTY_IND:
+            if ind != self.EMPTY_IND:
                 decoded.append(self.ind2char[ind])
             last_char_ind = ind
 
