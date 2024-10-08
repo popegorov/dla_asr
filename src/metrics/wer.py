@@ -1,4 +1,5 @@
 from typing import List
+from pyctcdecode import Alphabet, BeamSearchDecoderCTC
 
 import torch
 from torch import Tensor
@@ -48,4 +49,24 @@ class CTCBeamSearchWERMetric(BaseMetric):
             target_text = self.text_encoder.normalize_text(target_text)
             pred_text = log_prob_vec[:length]
             wers.append(calc_wer(target_text, pred_text))
+        return sum(wers) / len(wers)
+
+class NewCTCBeamSearchWERMetric(BaseMetric):
+    def __init__(self, text_encoder, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.text_encoder = text_encoder
+        self.decoder = BeamSearchDecoderCTC(Alphabet(text_encoder.vocab, False), None)
+
+    def __call__(
+        self, log_probs: Tensor, log_probs_length: Tensor, text: List[str], **kwargs
+    ):
+        wers = []
+        lengths = log_probs_length.detach().numpy()
+        log_probs = log_probs.detach().numpy()
+        for log_prob, length, target_text in zip(log_probs, lengths, text):
+            pred_text = self.decoder.decode(log_prob[:length])
+            target_text = self.text_encoder.normalize_text(target_text)
+            wers.append(calc_wer(target_text, pred_text))
+
+        print(sum(wers) / len(wers))
         return sum(wers) / len(wers)

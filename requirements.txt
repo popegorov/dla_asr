@@ -17,3 +17,4 @@ datasets
 black
 isort
 pre-commit
+pyctcdecode

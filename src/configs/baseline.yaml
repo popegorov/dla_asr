@@ -21,9 +21,9 @@ loss_function:
 text_encoder:
   _target_: src.text_encoder.CTCTextEncoder
 trainer:
-  log_step: 1000
-  n_epochs: 10
-  epoch_len: 10000
+  log_step: 3
+  n_epochs: 3
+  epoch_len: 3
   device_tensors: ["spectrogram", "text_encoded"] # which tensors should be on device (ex. GPU)
   resume_from: null # null or path to the checkpoint dir with *.pth and config.yaml
   device: auto # device name or "auto"

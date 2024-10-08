@@ -10,3 +10,7 @@ inference: # metrics that are calculated during inference (eval)
   - _target_: src.metrics.CTCBeamSearchWERMetric
     name: "WER_(BeamSearch)"
     beam_size: 3
+  - _target_: src.metrics.NewCTCBeamSearchCERMetric
+    name: "CER_(BeamSearch)"
+  - _target_: src.metrics.NewCTCBeamSearchWERMetric
+    name: "WER_(BeamSearch)"
