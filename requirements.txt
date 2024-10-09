@@ -18,3 +18,4 @@ black
 isort
 pre-commit
 pyctcdecode
+https://github.com/kpu/kenlm/archive/master.zip
