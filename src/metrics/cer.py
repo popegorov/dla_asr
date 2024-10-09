@@ -57,7 +57,7 @@ class CTCBeamSearchLMCERMetric(BaseMetric):
     ):
         cers = []
         lengths = log_probs_length.cpu().detach().numpy()
-        log_probs = log_probs.detach().numpy()
+        log_probs = log_probs.cpu().detach().numpy()
         for log_prob, length, target_text in zip(log_probs, lengths, text):
             pred_text = self.text_encoder.ctc_beam_search_lm_decode(log_prob[:length, :])
             target_text = self.text_encoder.normalize_text(target_text)
