@@ -39,7 +39,7 @@ class CTCBeamSearchCERMetric(BaseMetric):
         self, log_probs: Tensor, log_probs_length: Tensor, text: List[str], **kwargs
     ):
         cers = []
-        lengths = log_probs_length.detach().numpy()
+        lengths = log_probs_length.cpu().detach().numpy()
         for log_prob, length, target_text in zip(log_probs, lengths, text):
             pred_text = self.text_encoder.ctc_beam_search_decode(log_prob[:length, :])[0]
             target_text = self.text_encoder.normalize_text(target_text)
@@ -56,7 +56,7 @@ class CTCBeamSearchLMCERMetric(BaseMetric):
         self, log_probs: Tensor, log_probs_length: Tensor, text: List[str], **kwargs
     ):
         cers = []
-        lengths = log_probs_length.detach().numpy()
+        lengths = log_probs_length.cpu().detach().numpy()
         log_probs = log_probs.detach().numpy()
         for log_prob, length, target_text in zip(log_probs, lengths, text):
             pred_text = self.text_encoder.ctc_beam_search_lm_decode(log_prob[:length, :])

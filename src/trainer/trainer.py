@@ -97,7 +97,7 @@ class Trainer(BaseTrainer):
         # Note: by improving text encoder and metrics design
         # this logging can also be improved significantly
 
-        log_probs = log_probs.detach().numpy()
+        log_probs = log_probs.cpu().detach().numpy()
         argmax_inds = log_probs.argmax(-1)
         argmax_inds = [
             inds[: int(ind_len)]
