@@ -42,4 +42,8 @@ class BNReluRNN(nn.Module):
         )
         x, _ = self.rnn(x)
         outputs, _ = nn.utils.rnn.pad_packed_sequence(x, batch_first=True)
-        return outputs[..., : self.rnn.hidden_size] + outputs[..., self.rnn.hidden_size :] if self.bidirectional else outputs
+        return (
+            outputs[..., : self.rnn.hidden_size] + outputs[..., self.rnn.hidden_size :]
+            if self.bidirectional
+            else outputs
+        )

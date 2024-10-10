@@ -93,10 +93,7 @@ from torch import Tensor
 
 class DeepSpeech2Extractor(nn.Module):
     def __init__(
-        self,
-        in_channels: int = 1,
-        hid_channels: int = 32,
-        out_channels: int = 96
+        self, in_channels: int = 1, hid_channels: int = 32, out_channels: int = 96
     ) -> None:
         super(DeepSpeech2Extractor, self).__init__()
         self.in_channels = in_channels
@@ -170,6 +167,5 @@ class DeepSpeech2Extractor(nn.Module):
                 )
                 seq_lengths = numerator.float() / float(module_.stride[1])
                 seq_lengths = seq_lengths.int() + 1
-
 
         return seq_lengths.int()

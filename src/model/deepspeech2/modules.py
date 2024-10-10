@@ -12,8 +12,6 @@ class Linear(nn.Module):
         if bias:
             init.zeros_(self.linear.bias)
 
-
     def forward(self, x: Tensor) -> Tensor:
         x = self.batch_norm(x.transpose(1, 2))
         return self.linear(x.transpose(1, 2))
-
