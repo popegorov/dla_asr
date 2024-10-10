@@ -92,27 +92,11 @@ from torch import Tensor
 
 
 class DeepSpeech2Extractor(nn.Module):
-    """
-    DeepSpeech2 extractor for automatic speech recognition described in
-    "Deep Speech 2: End-to-End Speech Recognition in English and Mandarin" paper
-    - https://arxiv.org/abs/1512.02595
-    Args:
-        input_dim (int): Dimension of input vector
-        in_channels (int): Number of channels in the input vector
-        out_channels (int): Number of channels produced by the convolution
-        activation (str): Activation function
-    Inputs: inputs, input_lengths
-        - **inputs** (batch, time, dim): Tensor containing input vectors
-        - **input_lengths**: Tensor containing containing sequence lengths
-    Returns: outputs, output_lengths
-        - **outputs**: Tensor produced by the convolution
-        - **output_lengths**: Tensor containing sequence lengths produced by the convolution
-    """
-
     def __init__(
         self,
         in_channels: int = 1,
-        out_channels: int = 32,
+        hid_channels: int = 32,
+        out_channels: int = 96
     ) -> None:
         super(DeepSpeech2Extractor, self).__init__()
         self.in_channels = in_channels
@@ -120,24 +104,32 @@ class DeepSpeech2Extractor(nn.Module):
         self.conv = nn.Sequential(
             nn.Conv2d(
                 in_channels,
-                out_channels,
+                hid_channels,
                 kernel_size=(41, 11),
                 stride=(2, 2),
                 padding=(20, 5),
                 bias=False,
             ),
-            nn.BatchNorm2d(out_channels),
+            nn.BatchNorm2d(hid_channels),
             nn.Hardtanh(0, 20, inplace=True),
             nn.Conv2d(
-                out_channels,
+                hid_channels,
+                hid_channels,
+                kernel_size=(21, 11),
+                stride=(2, 1),
+                padding=(10, 5),
+                bias=False,
+            ),
+            nn.BatchNorm2d(hid_channels),
+            nn.Hardtanh(0, 20, inplace=True),
+            nn.Conv2d(
+                hid_channels,
                 out_channels,
                 kernel_size=(21, 11),
                 stride=(2, 1),
                 padding=(10, 5),
                 bias=False,
             ),
-            nn.BatchNorm2d(out_channels),
-            nn.Hardtanh(0, 20, inplace=True),
         )
 
     def forward(self, spectrogram: Tensor, **batch) -> Tuple[Tensor, Tensor]:
@@ -152,7 +144,11 @@ class DeepSpeech2Extractor(nn.Module):
         return outputs
 
     def get_output_dim(self, n_feats):
-        return n_feats * 8
+        input_size = n_feats
+        input_size = (input_size - 1) // 2 + 1
+        input_size = (input_size - 1) // 2 + 1
+        input_size = (input_size - 1) // 2 + 1
+        return input_size * self.out_channels
 
     def _get_sequence_lengths(self, seq_lengths: Tensor) -> Tensor:
         """
@@ -175,7 +171,5 @@ class DeepSpeech2Extractor(nn.Module):
                 seq_lengths = numerator.float() / float(module_.stride[1])
                 seq_lengths = seq_lengths.int() + 1
 
-            elif isinstance(module_, nn.MaxPool2d):
-                seq_lengths >>= 1
 
         return seq_lengths.int()

@@ -4,25 +4,7 @@ from torch import Tensor
 
 
 class BNReluRNN(nn.Module):
-    """
-    Recurrent neural network with batch normalization layer & ReLU activation function.
-
-    Args:
-        input_size (int): size of input
-        hidden_state_dim (int): the number of features in the hidden state `h`
-        rnn_type (str, optional): type of RNN cell (default: gru)
-        bidirectional (bool, optional): if True, becomes a bidirectional encoder (defulat: True)
-        dropout_p (float, optional): dropout probability (default: 0.1)
-
-    Inputs: inputs, input_lengths
-        - **inputs** (batch, time, dim): Tensor containing input vectors
-        - **input_lengths**: Tensor containing containing sequence lengths
-
-    Returns: outputs
-        - **outputs**: Tensor produced by the BNReluRNN module
-    """
-
-    supported_rnns = {
+    rnns = {
         "lstm": nn.LSTM,
         "gru": nn.GRU,
         "rnn": nn.RNN,
@@ -39,7 +21,8 @@ class BNReluRNN(nn.Module):
         super(BNReluRNN, self).__init__()
         self.hidden_state_dim = hidden_state_dim
         self.batch_norm = nn.BatchNorm1d(input_size)
-        rnn_cell = self.supported_rnns[rnn_type]
+        rnn_cell = self.rnns[rnn_type]
+        self.bidirectional = bidirectional
         self.rnn = rnn_cell(
             input_size=input_size,
             hidden_size=hidden_state_dim,
@@ -51,14 +34,12 @@ class BNReluRNN(nn.Module):
         )
 
     def forward(self, spectrogram: Tensor, spectrogram_length: Tensor, **batch):
-        total_length = spectrogram.size(0)
-        x = F.relu(self.batch_norm(spectrogram.transpose(1, 2)))
+        x = self.batch_norm(spectrogram.transpose(1, 2))
 
         x = x.transpose(1, 2)
         x = nn.utils.rnn.pack_padded_sequence(
-            x, spectrogram_length.cpu(), enforce_sorted=False
+            x, spectrogram_length.cpu(), enforce_sorted=False, batch_first=True
         )
         x, _ = self.rnn(x)
-        outputs, _ = nn.utils.rnn.pad_packed_sequence(x, total_length=total_length)
-
-        return outputs
+        outputs, _ = nn.utils.rnn.pad_packed_sequence(x, batch_first=True)
+        return outputs[..., : self.rnn.hidden_size] + outputs[..., self.rnn.hidden_size :] if self.bidirectional else outputs
