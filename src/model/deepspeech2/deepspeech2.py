@@ -14,7 +14,7 @@ class DeepSpeech2(nn.Module):
         n_tokens: int,
         n_feats: int,
         rnn_type="gru",
-        num_rnn_layers: int = 5,
+        num_rnn_layers: int = 3,
         rnn_hidden_dim: int = 512,
         dropout_p: float = 0.1,
         bidirectional: bool = True,
