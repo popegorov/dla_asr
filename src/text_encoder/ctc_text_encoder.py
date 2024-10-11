@@ -76,7 +76,7 @@ class CTCTextEncoder:
         return "".join(decoded)
 
     def ctc_beam_search_decode(self, probs) -> str:
-        return self.ctc_beam_search(probs, self.beam_size)
+        return self.ctc_beam_search(probs)
 
     def ctc_beam_search_lm_decode(self, probs) -> str:
         return self.decoder.decode(probs, self.beam_size)
