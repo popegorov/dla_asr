@@ -1,5 +1,6 @@
 import re
 from string import ascii_lowercase
+import numpy as np
 
 import torch
 from pyctcdecode import Alphabet, BeamSearchDecoderCTC
@@ -106,7 +107,8 @@ class CTCTextEncoder:
         dp = {
             ("", self.EMPTY_TOK): 1.0,
         }
-        for prob in log_probs:
+        probs = np.exp(log_probs.cpu().detach().numpy())
+        for prob in probs:
             dp = self.expand_and_merge_path(dp, prob, self.ind2char)
             dp = self.truncate_paths(dp, self.beam_size)
 
