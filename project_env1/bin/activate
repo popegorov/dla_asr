@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/legend/Desktop/Универ/4/DLA/hw1/project_env1"
+VIRTUAL_ENV="/Users/legend/Desktop/Универ/4/DLA/new_hw1/project_env1"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

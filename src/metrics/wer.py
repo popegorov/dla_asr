@@ -33,6 +33,7 @@ class CTCBeamSearchWERMetric(BaseMetric):
         super().__init__(*args, **kwargs)
         self.text_encoder = text_encoder
         self.beam_size = beam_size
+        self.text_encoder.set_beam_size(self.beam_size)
 
     def __call__(
         self, log_probs: Tensor, log_probs_length: Tensor, text: List[str], **kwargs
