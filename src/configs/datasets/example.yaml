@@ -2,14 +2,14 @@ train:
   _target_: src.datasets.LibrispeechDataset
   part: "train_all"
   instance_transforms: ${transforms.instance_transforms.train}
-  data_dir: "/kaggle/input/d/a24998667/librispeech/train-clean-360"
+  # data_dir: "/kaggle/input/d/a24998667/librispeech/train-clean-360"
 val:
   _target_: src.datasets.LibrispeechDataset
   part: "test-other"
   instance_transforms: ${transforms.instance_transforms.inference}
-  data_dir: "/kaggle/input/d/a24998667/librispeech/dev-clean"
+  # data_dir: "/kaggle/input/d/a24998667/librispeech/dev-clean"
 test:
   _target_: src.datasets.LibrispeechDataset
   part: "test-clean"
   instance_transforms: ${transforms.instance_transforms.inference}
-  data_dir: "/kaggle/input/d/a24998667/librispeech/test-clean"
+  # data_dir: "/kaggle/input/d/a24998667/librispeech/test-clean"
