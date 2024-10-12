@@ -29,6 +29,7 @@ class LibrispeechDataset(BaseDataset):
             data_dir = ROOT_PATH / "data" / "datasets" / "librispeech"
             data_dir.mkdir(exist_ok=True, parents=True)
         self._data_dir = data_dir
+        print(data_dir)
         if part == "train_all":
             index = sum(
                 [
