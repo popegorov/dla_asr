@@ -1,0 +1,6 @@
+defaults:
+  - instance_transforms: inference
+  - _self_
+
+batch_transforms:
+  inference: null

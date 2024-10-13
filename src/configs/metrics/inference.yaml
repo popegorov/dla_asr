@@ -1,0 +1,7 @@
+inference:
+  - _target_: src.metrics.CTCBeamSearchLMCERMetric
+    name: "CER_(BeamSearchLM)"
+    beam_size: 100
+  - _target_: src.metrics.CTCBeamSearchLMWERMetric
+    name: "WER_(BeamSearchLM)"
+    beam_size: 100

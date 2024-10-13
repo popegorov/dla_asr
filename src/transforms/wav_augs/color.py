@@ -1,11 +1,12 @@
 import torch_audiomentations
-from torch import Tensor, nn
 import torch
+from torch import Tensor, nn
 
-class Gain(nn.Module):
+
+class ColorNoise(nn.Module):
     def __init__(self, *args, **kwargs):
         super().__init__()
-        self._aug = torch_audiomentations.Gain(*args, **kwargs)
+        self._aug = torch_audiomentations.AddColoredNoise(*args, **kwargs)
         self.prob = 0
 
     def __call__(self, data: Tensor):
