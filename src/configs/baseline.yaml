@@ -22,7 +22,7 @@ text_encoder:
   _target_: src.text_encoder.CTCTextEncoder
 trainer:
   log_step: 200
-  n_epochs: 12
+  n_epochs: 6
   epoch_len: 1000
   device_tensors: ["spectrogram", "text_encoded"] # which tensors should be on device (ex. GPU)
   resume_from: "saved/model/best_model.pth" # null or path to the checkpoint dir with *.pth and config.yaml
