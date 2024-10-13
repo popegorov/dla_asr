@@ -2,8 +2,8 @@ defaults:
   - model: deepspeech
   - writer: wandb
   - metrics: example
-  - datasets: onebatchtest
-  - dataloader: onebatchtest
+  - datasets: example
+  - dataloader: example
   - transforms: example_only_instance
   - _self_
 optimizer:
@@ -21,9 +21,9 @@ loss_function:
 text_encoder:
   _target_: src.text_encoder.CTCTextEncoder
 trainer:
-  log_step: 3
-  n_epochs: 3
-  epoch_len: 10
+  log_step: 200
+  n_epochs: 12
+  epoch_len: 1000
   device_tensors: ["spectrogram", "text_encoded"] # which tensors should be on device (ex. GPU)
   resume_from: null # null or path to the checkpoint dir with *.pth and config.yaml
   device: auto # device name or "auto"
