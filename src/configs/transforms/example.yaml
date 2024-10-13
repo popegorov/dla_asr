@@ -1,4 +1,6 @@
 defaults:
-  - batch_transforms: spec_augs
-  - instance_transforms: wav_augs
+  # - batch_transforms: spec_augs
+  # - instance_transforms: wav_augs
+  - batch_transforms: example
+  - instance_transforms: example
   - _self_

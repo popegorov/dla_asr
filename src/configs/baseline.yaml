@@ -2,8 +2,8 @@ defaults:
   - model: deepspeech
   - writer: wandb
   - metrics: example
-  - datasets: onebatchtest
-  - dataloader: onebatchtest
+  - datasets: example
+  - dataloader: example
   - transforms: example
   - _self_
 optimizer:
