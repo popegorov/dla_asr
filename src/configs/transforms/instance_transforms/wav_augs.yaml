@@ -4,10 +4,10 @@ train:
     sample_rate: 16000
     n_fft: 512
   audio:
-    # _target_: torchvision.transforms.v2.RandomChoice
-    _target_: torch.nn.Sequential
-    # transforms:
-    _args_:
+    _target_: torchvision.transforms.v2.RandomChoice
+    # _target_: torch.nn.Sequential
+    transforms:
+    # _args_:
       - _target_: src.transforms.wav_augs.Gain
       - _target_: src.transforms.wav_augs.ColorNoise
         sample_rate: 16000
