@@ -1,6 +1,6 @@
 train:
   _target_: src.datasets.LibrispeechDataset
-  part: "train_all"
+  part: "train-clean"
   instance_transforms: ${transforms.instance_transforms.train}
 val:
   _target_: src.datasets.LibrispeechDataset
